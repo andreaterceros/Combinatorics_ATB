@@ -16,6 +16,8 @@ public class VoxelGrid
     public Edge[][,,] Edges = new Edge[3][,,];
     public Vector3 Origin;
     public Vector3 Corner;
+    //new
+    public List<Block> PlacedBlocks = new List<Block>();
 
     #endregion
 
@@ -275,8 +277,12 @@ public class VoxelGrid
         //Keep adding blocks to the grid untill all the pending blocks are added
         while (_currentBlocks.Count > 0)
         {
-            _currentBlocks.First().ActivateVoxels();
-            counter++;
+            if (_currentBlocks.First().ActivateVoxels(out var newBlock))
+            {
+                PlacedBlocks.Add(newBlock);
+                counter++;
+            }
+            
         }
         //Debug.Log($"Added {counter} blocks to the grid");
         return true;
